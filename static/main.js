@@ -1,9 +1,17 @@
 const form = document.querySelector('#form');
-const warningElement = document.querySelector('.warnings')
+const ageError = document.querySelector('#age-error');
+const emailError = document.querySelector('#email-error');
+const passwordError = document.querySelector('#password-error');
+
 
 let users = []
 let editing = false
 let userid = null 
+
+
+const emailRegex =/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+const passwordRegex = /^.{4,12}$/
+
 
 
 window.addEventListener('DOMContentLoaded', async () => {
@@ -24,11 +32,29 @@ form.addEventListener('submit', async (e) => {
   const email = form['email'].value;
   const password = form['password'].value;
 
-  if (age < 18) {
-    warningElement.textContent = 'Debe ser mayor a 18 años para registrarse';
+  if (!emailRegex.test(email)) {
+    emailError.textContent = 'Estructura no esperada';
+    return;
   } else {
-    // Si la edad es válida, ocultar el mensaje de advertencia
-    warningElement.textContent = '';
+    emailError.textContent = ''; // Borra el mensaje de error si el correo es válido
+  }
+
+  if (!passwordRegex.test(password)) {
+    passwordError.textContent = 'Estructura no esperada';
+    return;
+  } else {
+    passwordError.textContent = ''; // Borra el mensaje de error si el correo es válido
+  }
+
+  if (isNaN(parseInt(age))) {
+    ageError.textContent = 'Debe ingresar edad(numero)';
+    return
+  } else if (parseInt(age) < 18) {
+    ageError.textContent = 'Debe ser mayor a 18 años para registrarse ';
+    return
+  }
+  else{
+    ageError.textContent = '';
   }
 
   if (!editing) {
